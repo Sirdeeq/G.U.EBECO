@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import DemoPage from "./demo/DemoPage";
+import NewQuestion from "./demo/NewQuestion";
+import CostSheet from "./demo/CostSheet";
+import ReportComponent from "./demo/ReportComponent";
+import MyComponent from "./demo/MyComponent";
+import "./App.css";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<DemoPage />} />
+      <Route path="/create-new-question" element={<NewQuestion />} />
+      <Route path="/cost-sheet" element={<CostSheet />} />
+      <Route path="/report" element={<ReportComponent />} />
+      <Route path="/com" element={<MyComponent />} />
+    </Routes>
   );
 }
-
-export default App;
