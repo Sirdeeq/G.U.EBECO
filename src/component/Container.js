@@ -1,23 +1,15 @@
 import React from "react";
+import { Container, Row, Col } from "reactstrap";
 
-export default function Container({ children }) {
-  const containerStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-  };
-
-  const innerStyle = {
-    position: "relative",
-    top: "35%",
-    left: "23%",
-    transform: "translate(-50%, -50%)",
-  };
-
+export default function CustomContainer({ children }) {
   return (
-    <div style={containerStyle}>
-      <div style={innerStyle}>{children}</div>
-    </div>
+    <Container
+      fluid
+      className="h-100 d-flex align-items-center justify-content-center"
+    >
+      <Row>
+        <Col className="text-center">{children}</Col>
+      </Row>
+    </Container>
   );
 }

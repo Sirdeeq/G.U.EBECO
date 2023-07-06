@@ -2,12 +2,21 @@ import { useNavigate } from "react-router-dom";
 import CustomButton from "./CustomButton";
 import { useSelector, useDispatch } from "react-redux";
 import { setQuotation } from "../../../redux/action/action";
+import { useEffect, useState } from "react";
 
 export default function ProfileForm() {
   const quotation = useSelector((state) => state.quotation);
-  const dispatch = useDispatch();
+  const [customerName, setCustomerName] = useState("");
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Set the initial customer name value
+    if (quotation.customerName) {
+      setCustomerName(quotation.customerName);
+    }
+  }, [quotation.customerName]);
 
   const handleSaveAndGoBack = () => {
     console.log("Saving data...");
@@ -40,11 +49,22 @@ export default function ProfileForm() {
     };
     dispatch(setQuotation(updatedQuotation));
     localStorage.setItem("quotationData", JSON.stringify(updatedQuotation));
+    localStorage.removeItem("quotationData"); // Remove the quotation data from localStorage
     navigate("/cost-sheet");
   };
 
+  const randomNumber = `G/U/EBECO/${Math.floor(Math.random() * 1000000)}`;
+  const questionNumberDisabled = Boolean(quotation.questionNumber); // Disable the input if the question number is already set
+
+  const [questionNumber, setQuestionNumber] = useState(
+    quotation.questionNumber || randomNumber.slice(0, -1)
+  );
+
   const handleQuestionNumberChange = (e) => {
-    dispatch(setQuotation({ questionNumber: e.target.value }));
+    if (!quotation.questionNumber) {
+      setQuestionNumber(e.target.value);
+      dispatch(setQuotation({ questionNumber: e.target.value }));
+    }
   };
 
   const handleSelectDateChange = (e) => {
@@ -52,9 +72,17 @@ export default function ProfileForm() {
   };
 
   const handleCustomerNameChange = (e) => {
+    setCustomerName(e.target.value);
+  };
+
+  const handleCustomerNameManualEntry = (e) => {
+    setCustomerName(e.target.value);
     dispatch(setQuotation({ customerName: e.target.value }));
   };
 
+  const handleCustomerNameSelect = () => {
+    dispatch(setQuotation({ customerName }));
+  };
   const handleJobsChange = (e) => {
     dispatch(setQuotation({ jobs: e.target.value }));
   };
@@ -91,13 +119,14 @@ export default function ProfileForm() {
             </label>
             <div className="mt-2">
               <input
-                type="number"
+                type="text"
                 name="question-no"
                 id="question-no"
                 autoComplete="question-no"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                value={quotation.questionNumber}
+                value={questionNumber}
                 onChange={handleQuestionNumberChange}
+                disabled
               />
             </div>
           </div>
@@ -128,22 +157,31 @@ export default function ProfileForm() {
             >
               Customer Name
             </label>
-            <div className="mt-2">
+            <div className="mt-2 flex">
               <select
                 id="customerName"
                 name="customerName"
-                value={quotation.customerName}
+                value={customerName}
                 onChange={handleCustomerNameChange}
+                onBlur={handleCustomerNameSelect}
                 autoComplete="customerName"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-3/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               >
-                <option>-- Select --</option>
+                <option value="">-- Select --</option>
                 <option value="Ali">Ali</option>
                 <option value="Fatima">Fatima</option>
                 <option value="Ahmed">Ahmed</option>
                 <option value="Aisha">Aisha</option>
                 <option value="Mohammed">Mohammed</option>
               </select>
+              <input
+                type="text"
+                id="customerNameInput"
+                name="customerNameInput"
+                value={customerName}
+                onChange={handleCustomerNameManualEntry}
+                className="w-1/4 ml-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
             </div>
           </div>
 

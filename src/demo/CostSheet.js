@@ -69,7 +69,7 @@ const CostSheet = ({
   };
   return (
     <div>
-      <div className="p-5 m-8 border shadow-sm container">
+      <div className="p-5 m-8 border shadow-sm ">
         <CustomButton
           type="button"
           color="bg-violet-400"

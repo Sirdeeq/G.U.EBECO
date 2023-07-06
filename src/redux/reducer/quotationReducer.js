@@ -22,8 +22,12 @@ const initialState = {
 const quotationReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_QUOTATION:
+      const randomNumber = Math.floor(Math.random() * 1000000); // Generate a random number between 0 and 999999
+      const quotationNumber = `g/u/ebeco/${randomNumber}`; // Format the random number
+
       return {
         ...state,
+        quotationNumber,
         ...action.payload,
       };
     case ADD_COST_SHEET_ITEM:
