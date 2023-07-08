@@ -8,11 +8,13 @@ import { Provider } from "react-redux";
 
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/action/store";
+import { Toaster } from "react-hot-toast";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
+        <Toaster />
         <App />
       </Provider>
     </BrowserRouter>

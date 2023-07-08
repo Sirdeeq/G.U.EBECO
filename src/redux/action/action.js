@@ -8,6 +8,7 @@ export const REMOVE_COST_SHEET_ITEM = "REMOVE_COST_SHEET_ITEM";
 export const FETCH_SAVED_DATA = "FETCH_SAVED_DATA";
 export const SET_CUSTOMER_NAME = "SET_CUSTOMER_NAME";
 export const SET_JOB = "SET_JOB";
+export const SET_SITE_INFORMATION = "SET_SITE_INFORMATION";
 
 // Action creators
 export const setQuotation = (quotation) => ({
@@ -57,3 +58,9 @@ export const setCustomerName = (customerName) => ({
     type: SET_JOB,
     payload: job,
   });
+
+  export const setSiteInformation = (siteInformation) => ({
+    type: SET_SITE_INFORMATION,
+    payload: siteInformation,
+  });
+  

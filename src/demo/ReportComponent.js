@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 import CustomInput from "../component/democomponent/form/CustomInput";
 import CustomButton from "../component/democomponent/form/CustomButton";
 import { useNavigate } from "react-router-dom";
-import { fetchSavedData } from "../redux/action/action"; // Import the action for fetching saved data
+import { fetchSavedData } from "../redux/action/action";
+import ReportPDFComponent from "./ReportPDFComponent";
+import ReactDOM from 'react-dom'; // Add this import
+import html2pdf from 'html2pdf.js';
+import { renderToStaticMarkup } from 'react-dom/server';
+
+
 
 const ReportComponent = ({ savedData, fetchSavedData }) => {
   const navigate = useNavigate();
@@ -16,6 +22,35 @@ const ReportComponent = ({ savedData, fetchSavedData }) => {
   useEffect(() => {
     fetchSavedData();
   }, [fetchSavedData]);
+
+  const handleDownloadReport = () => {
+    const dummyData = {
+      name: 'John Doe',
+      number: '123456',
+      siteAddress: '123 Main St',
+      personInChargeNumber: '7890',
+      physicalMeasurementTakenBy: 'Jane Smith',
+      textThenColor: 'Lorem Ipsum',
+      jobOrder: 'Job Order 123',
+      quotationNumber: 'Q-987',
+      costSheetItems: [
+        { id: 1, title: 'Item 1' },
+        { id: 2, title: 'Item 2' },
+      ],
+    };
+
+    const options = {
+      filename: 'report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    };
+
+    const element = <ReportPDFComponent data={dummyData} />;
+
+    // Using html2pdf to generate and download the PDF
+    html2pdf().set(options).from(element).save();
+  };
   return (
     <div>
       <div className="p-5 m-8 border shadow-sm">
@@ -55,6 +90,12 @@ const ReportComponent = ({ savedData, fetchSavedData }) => {
           >
             Saved Data
           </h1>
+          <CustomButton
+            type="button"
+            color="bg-blue-500"
+            buttonText="Download Report"
+            onClick={handleDownloadReport}
+          />
           <div className="card">
             <div className="card-body grid grid-cols-2 gap-4">
               <div>
@@ -147,6 +188,17 @@ const ReportComponent = ({ savedData, fetchSavedData }) => {
               </div>
             </div>
           </div>
+
+          {savedData && savedData.costSheet.length > 0 && (
+            <div className="mt-4">
+              <CustomButton
+                type="button"
+                color="bg-blue-500"
+                buttonText="Download Report"
+                onClick={handleDownloadReport}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -154,11 +206,11 @@ const ReportComponent = ({ savedData, fetchSavedData }) => {
 };
 
 const mapStateToProps = (state) => ({
-  savedData: state.savedData, // Get the saved data from Redux store
+  savedData: state.savedData,
 });
 
 const mapDispatchToProps = {
-  fetchSavedData, // Map the fetchSavedData action to props
+  fetchSavedData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReportComponent);

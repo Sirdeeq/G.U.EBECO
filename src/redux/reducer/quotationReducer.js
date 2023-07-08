@@ -4,6 +4,7 @@ import {
   SET_QUOTATION,
   SET_CUSTOMER_NAME,
   SET_JOB,
+  SET_SITE_INFORMATION,
 } from "../action/action";
 
 // Define initial state
@@ -58,6 +59,12 @@ const quotationReducer = (state = initialState, action) => {
         ...state,
         jobs: action.payload,
       };
+    case SET_SITE_INFORMATION:
+      return {
+        ...state,
+        siteInformation: action.payload,
+      };
+
     default:
       return state;
   }

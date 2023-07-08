@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export default function ProfileForm() {
   const quotation = useSelector((state) => state.quotation);
   const [customerName, setCustomerName] = useState("");
+  const [showSiteInformation, setShowSiteInformation] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,13 +23,27 @@ export default function ProfileForm() {
     console.log("Saving data...");
     const updatedQuotation = {
       ...quotation,
-      questionNumber: document.getElementById("question-no").value,
-      selectDate: document.getElementById("selectDate").value,
-      customerName: document.getElementById("customerName").value,
-      jobs: document.getElementById("jobs").value,
-      jobDeliveryDate: document.getElementById("jobDeliveryDate").value,
-      deliveryPersonName: document.getElementById("deliveryPersonName").value,
-      amount: document.getElementById("amount").value,
+      questionNumber: getValueById("question-no"),
+      selectDate: getValueById("selectDate"),
+      customerName: getValueById("customerName"),
+      jobs: getValueById("jobs"),
+      jobDeliveryDate: getValueById("jobDeliveryDate"),
+      deliveryPersonName: getValueById("deliveryPersonName"),
+      amount: getValueById("amount"),
+      siteInformation: {
+        dateFirstPayment: getValueById("dateFirstPayment"),
+        dateMeasurementReadiness: getValueById("dateMeasurementReadiness"),
+        dateFactoryCommencement: getValueById("dateFactoryCommencement"),
+        dateInstallation: getValueById("dateInstallation"),
+        balancePaid: getValueById("balancePaid"),
+        siteCommencement: getValueById("siteCommencement"),
+        siteTeam: getValueById("siteTeam"),
+        durationInstallation: getValueById("durationInstallation"),
+        dateFinishingInstallation: getValueById("dateFinishingInstallation"),
+        teamHeadName: getValueById("teamHeadName"),
+        siteManagerName: getValueById("siteManagerName"),
+        reportFromHeadSite: getValueById("reportFromHeadSite"),
+      },
     };
     dispatch(setQuotation(updatedQuotation));
     localStorage.setItem("quotationData", JSON.stringify(updatedQuotation));
@@ -39,13 +54,27 @@ export default function ProfileForm() {
     console.log("Saving data...");
     const updatedQuotation = {
       ...quotation,
-      questionNumber: document.getElementById("question-no").value,
-      selectDate: document.getElementById("selectDate").value,
-      customerName: document.getElementById("customerName").value,
-      jobs: document.getElementById("jobs").value,
-      jobDeliveryDate: document.getElementById("jobDeliveryDate").value,
-      deliveryPersonName: document.getElementById("deliveryPersonName").value,
-      amount: document.getElementById("amount").value,
+      questionNumber: getValueById("question-no"),
+      selectDate: getValueById("selectDate"),
+      customerName: getValueById("customerName"),
+      jobs: getValueById("jobs"),
+      jobDeliveryDate: getValueById("jobDeliveryDate"),
+      deliveryPersonName: getValueById("deliveryPersonName"),
+      amount: getValueById("amount"),
+      siteInformation: {
+        dateFirstPayment: getValueById("dateFirstPayment"),
+        dateMeasurementReadiness: getValueById("dateMeasurementReadiness"),
+        dateFactoryCommencement: getValueById("dateFactoryCommencement"),
+        dateInstallation: getValueById("dateInstallation"),
+        balancePaid: getValueById("balancePaid"),
+        siteCommencement: getValueById("siteCommencement"),
+        siteTeam: getValueById("siteTeam"),
+        durationInstallation: getValueById("durationInstallation"),
+        dateFinishingInstallation: getValueById("dateFinishingInstallation"),
+        teamHeadName: getValueById("teamHeadName"),
+        siteManagerName: getValueById("siteManagerName"),
+        reportFromHeadSite: getValueById("reportFromHeadSite"),
+      },
     };
     dispatch(setQuotation(updatedQuotation));
     localStorage.setItem("quotationData", JSON.stringify(updatedQuotation));
@@ -82,6 +111,12 @@ export default function ProfileForm() {
 
   const handleCustomerNameSelect = () => {
     dispatch(setQuotation({ customerName }));
+  };
+
+  // Utility function to get the value of an element by ID
+  const getValueById = (id) => {
+    const element = document.getElementById(id);
+    return element ? element.value : "";
   };
   const handleJobsChange = (e) => {
     dispatch(setQuotation({ jobs: e.target.value }));
@@ -275,6 +310,207 @@ export default function ProfileForm() {
               />
             </div>
           </div>
+          <div className="sm:col-span-full">
+            <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+              Site
+            </label>
+            <div className="mt-2 flex items-center">
+              <input
+                type="checkbox"
+                id="siteCheckbox"
+                className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                onChange={() => setShowSiteInformation(!showSiteInformation)}
+              />
+              <label htmlFor="siteCheckbox" className="ml-2 text-gray-200">
+                Include Site Information
+              </label>
+            </div>
+          </div>
+          <div className="sm:col-span-full">
+            {showSiteInformation && (
+              <div className="p-5 m-8 border shadow-sm">
+                <div className="border-t border-gray-900/10 pt-6 mt-6">
+                  <h2 className="text-base font-semibold leading-7 text-white text-center">
+                    Site Information
+                  </h2>
+                  <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Date of First Payment
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="date"
+                          id="dateFirstPayment"
+                          name="dateFirstPayment"
+                          autoComplete="dateFirstPayment"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Date of Measurement Readiness
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="date"
+                          id="dateMeasurementReadiness"
+                          name="dateMeasurementReadiness"
+                          autoComplete="dateMeasurementReadiness"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Date of Factory Commencement
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="date"
+                          id="dateFactoryCommencement"
+                          name="dateFactoryCommencement"
+                          autoComplete="dateFactoryCommencement"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Date of Installation
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="date"
+                          id="dateInstallation"
+                          name="dateInstallation"
+                          autoComplete="dateInstallation"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Balance Paid
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          id="balancePaid"
+                          name="balancePaid"
+                          autoComplete="balancePaid"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Site Commencement
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          id="siteCommencement"
+                          name="siteCommencement"
+                          autoComplete="siteCommencement"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Site Team
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          id="siteTeam"
+                          name="siteTeam"
+                          autoComplete="siteTeam"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Duration of Installation
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          id="durationInstallation"
+                          name="durationInstallation"
+                          autoComplete="durationInstallation"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Date of Finishing Installation
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="date"
+                          id="dateFinishingInstallation"
+                          name="dateFinishingInstallation"
+                          autoComplete="dateFinishingInstallation"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400To continue the code from where it left off:
+
+```jsx
+focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Team Head Name and Sign
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          id="teamHeadName"
+                          name="teamHeadName"
+                          autoComplete="teamHeadName"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Site Manager Name and Sign
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          id="siteManagerName"
+                          name="siteManagerName"
+                          autoComplete="siteManagerName"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div className="sm:col-span-full">
+                      <label className="block text-white text-sm font-medium leading-6 text-gray-900">
+                        Report from the Head Site
+                      </label>
+                      <div className="mt-2">
+                        <textarea
+                          id="reportFromHeadSite"
+                          name="reportFromHeadSite"
+                          rows="3"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+
           <div className="sm:col-span-3">
             <CustomButton
               type="button"

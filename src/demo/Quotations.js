@@ -12,6 +12,7 @@ export default function Quotations() {
     const handleView = (rowIndex) => {
         // Handle View logic here
         console.log("View clicked for row", rowIndex);
+        navigate('/view/quotation-details', { state: { quotation: data[rowIndex].quotation } });
     };
     const goToNewQuotations = () => {
         navigate('/create-new-quotation');

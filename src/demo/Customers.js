@@ -7,12 +7,13 @@ export default function Customers() {
   const navigate = useNavigate();
   const headers = ["Customer Name", "Status", "Phone Number"];
   const data = [
-    { name: "John Doe", role: "Manager", phoneNumber: "1234567890" },
-    { name: "Jane Smith", role: "Supervisor", phoneNumber: "9876543210" },
+    { name: "John Doe", status: "existing", phoneNumber: "1234567890" },
+    { name: "Jane Smith", status: "walk-in", phoneNumber: "9876543210" },
   ];
   const handleView = (rowIndex) => {
     // Handle View logic here
     console.log("View clicked for row", rowIndex);
+    navigate('/view/customers-details', { state: { rowIndex } });
   };
   const goToNewCustomer = () => {
     navigate('/new-customer');

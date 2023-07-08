@@ -12,6 +12,10 @@ import NewUser from "../demo/NewUser";
 import SettingsPage from "../demo/SettingPage";
 import Quotations from "../demo/Quotations";
 import SearchComponent from "../demo/SearchComponent";
+import ReportPDFComponent from "../demo/ReportPDFComponent";
+import ViewUser from "../demo/ViewUser";
+import ViewCustomer from "../demo/ViewCustomer";
+import ViewQuotation from "../demo/ViewQuotation";
 
 export default function AppNavigation() {
     let Pages = useRoutes([
@@ -58,9 +62,25 @@ export default function AppNavigation() {
                 {
                     path: "/quotations",
                     element: <Quotations />
-                },{
+                }, {
                     path: "/search",
-                                        element: <SearchComponent />
+                    element: <SearchComponent />
+                },
+                {
+                    path: '/report-pdf-view',
+                    element: <ReportPDFComponent />
+                },
+                {
+                    path: '/view/user-details',
+                    element: <ViewUser />
+                },
+                {
+                    path: '/view/quotation-details',
+                    element: <ViewQuotation />
+                },
+                {
+                    path: '/view/customers-details',
+                    element: <ViewCustomer />
                 }
             ]
         }

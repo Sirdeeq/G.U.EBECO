@@ -13,6 +13,7 @@ export default function Users() {
     const handleView = (rowIndex) => {
         // Handle View logic here
         console.log("View clicked for row", rowIndex);
+        navigate('/view/user-details', { state: { rowIndex } });
     };
     const goToNewUser = () => {
         navigate('/new-user');

@@ -67,32 +67,30 @@ const CostSheet = ({
     // Navigate to the report component
     navigate("/report");
   };
+
   return (
-    <div>
-      <div className="p-5 m-8 border shadow-sm ">
+    <div className="container mx-auto">
+      <div className="p-5 my-8 border shadow-sm">
         <CustomButton
           type="button"
           color="bg-violet-400"
           buttonText="Back"
           onClick={() => navigate(-1)}
         />
-        <h1
-          style={{ fontSize: "30px" }}
-          className="text-lg font-bold leading-7 text-center text-violet-400"
-        >
+        <h1 className="text-2xl font-bold text-center text-violet-400">
           Cost Sheet
         </h1>
-        <div className="p-5 m-8 border shadow-sm  flex">
+        <div className="p-5 flex">
           <div className="border shadow-sm flex-1 p-4">
-            <p className="text-lg font-semibold">Display Quotation Number</p>
+            <p className="font-semibold">Display Quotation Number</p>
           </div>
           <div className="border shadow-sm flex-1 p-4">
-            <p className="text-lg font-semibold">Display Customer Name</p>
+            <p className="font-semibold">Display Customer Name</p>
           </div>
         </div>
-        <div className="p-2 m-8">
-          <div className="p-4 m-8 flex">
-            <div className=" flex-1">
+        <div className="p-2">
+          <div className="p-4 flex flex-col sm:flex-row">
+            <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
               <CustomInput
                 darkMode={true}
                 label="List of Jobs"
@@ -124,14 +122,18 @@ const CostSheet = ({
                 ]}
               />
             </div>
-            <div className=" flex-1">
-              <CustomInput darkMode={true} type="date" label="Date of issue" />
+            <div className="w-full sm:w-1/2">
+              <CustomInput
+                darkMode={true}
+                type="date"
+                label="Date of issue"
+              />
             </div>
           </div>
-          <div className=" col-span-full">
+          <div className="col-span-full">
             <CustomInput
               darkMode={true}
-              label="Recieving By"
+              label="Receiving By"
               type="select"
               options={[
                 { value: "select", label: "-- Select Customer --" },
@@ -150,7 +152,7 @@ const CostSheet = ({
           </div>
         </div>
 
-        <div className="p-5 m-8 border shadow-sm ">
+        <div className="p-5 border shadow-sm">
           <CustomTable
             id="ID"
             headers={headers}
@@ -171,6 +173,7 @@ const CostSheet = ({
     </div>
   );
 };
+
 const mapStateToProps = (state) => ({
   quotationNumber: state.quotationNumber,
   customerName: state.customerName,
