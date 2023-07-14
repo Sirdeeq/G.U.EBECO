@@ -14,9 +14,11 @@ import { renderToStaticMarkup } from 'react-dom/server';
 const ReportComponent = ({ savedData, fetchSavedData }) => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState("");
+  const [showAdditionalInput, setShowAdditionalInput] = useState(false);
 
   const handleOptionChange = (value) => {
     setSelectedOption(value);
+    setShowAdditionalInput(true);
   };
 
   useEffect(() => {
@@ -82,6 +84,17 @@ const ReportComponent = ({ savedData, fetchSavedData }) => {
         />
 
         <p>Selected Report Option: {selectedOption}</p>
+
+        {showAdditionalInput && (
+          <CustomInput
+            darkMode={false}
+            label="Additional Input"
+            type="text"
+            // Set the value based on the selectedOption
+            value={selectedOption}
+            disabled
+          />
+        )}
 
         <div className="p-5 m-8 border shadow-sm">
           <h1

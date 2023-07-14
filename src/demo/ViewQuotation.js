@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 const ViewQuotation = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -19,8 +20,8 @@ const ViewQuotation = () => {
     };
 
     const handleUpdate = () => {
-        // Perform update logic here
         console.log('Updated quotation:', quotation);
+        toast.success(`Successfully updated ${quotation.customerName}`)
         setIsEditing(false);
     };
 

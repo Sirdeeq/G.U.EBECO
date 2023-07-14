@@ -150,7 +150,7 @@ export default function ProfileForm() {
               htmlFor="question-no"
               className="block text-white text-sm font-medium leading-6 text-gray-900 "
             >
-              Add Question Number
+              Add Quotation Number
             </label>
             <div className="mt-2">
               <input
