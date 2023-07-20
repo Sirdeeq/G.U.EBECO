@@ -18,7 +18,7 @@ export default function NewQuestion() {
           style={{ fontSize: "30px" }}
           className="text-lg font-bold leading-7 text-violet-400 text-center text-gray-900"
         >
-          Create New Question
+          Create New Quotation
         </h1>
         <ProfileForm />
       </div>

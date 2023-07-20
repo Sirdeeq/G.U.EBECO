@@ -1,13 +1,15 @@
-import { useNavigate } from "react-router-dom";
-import CustomButton from "./CustomButton";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setQuotation } from "../../../redux/action/action";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CustomButton from "./CustomButton";
 
 export default function ProfileForm() {
   const quotation = useSelector((state) => state.quotation);
   const [customerName, setCustomerName] = useState("");
   const [showSiteInformation, setShowSiteInformation] = useState(false);
+  const [jobs, setJobs] = useState([]);
+  const [selectedJobs, setSelectedJobs] = useState(quotation.jobs || []);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ export default function ProfileForm() {
       questionNumber: getValueById("question-no"),
       selectDate: getValueById("selectDate"),
       customerName: getValueById("customerName"),
-      jobs: getValueById("jobs"),
+      jobs: selectedJobs.map((option) => option.value),
       jobDeliveryDate: getValueById("jobDeliveryDate"),
       deliveryPersonName: getValueById("deliveryPersonName"),
       amount: getValueById("amount"),
@@ -57,7 +59,7 @@ export default function ProfileForm() {
       questionNumber: getValueById("question-no"),
       selectDate: getValueById("selectDate"),
       customerName: getValueById("customerName"),
-      jobs: getValueById("jobs"),
+      jobs: selectedJobs.map((option) => option.value),
       jobDeliveryDate: getValueById("jobDeliveryDate"),
       deliveryPersonName: getValueById("deliveryPersonName"),
       amount: getValueById("amount"),
@@ -86,14 +88,12 @@ export default function ProfileForm() {
   const questionNumberDisabled = Boolean(quotation.questionNumber); // Disable the input if the question number is already set
 
   const [questionNumber, setQuestionNumber] = useState(
-    quotation.questionNumber || randomNumber.slice(0, -1)
+    quotation.questionNumber
   );
 
   const handleQuestionNumberChange = (e) => {
-    if (!quotation.questionNumber) {
-      setQuestionNumber(e.target.value);
-      dispatch(setQuotation({ questionNumber: e.target.value }));
-    }
+    setQuestionNumber(e.target.value);
+    dispatch(setQuotation({ questionNumber: e.target.value }));
   };
 
   const handleSelectDateChange = (e) => {
@@ -118,9 +118,30 @@ export default function ProfileForm() {
     const element = document.getElementById(id);
     return element ? element.value : "";
   };
+
   const handleJobsChange = (e) => {
-    dispatch(setQuotation({ jobs: e.target.value }));
+    const selectedOptions = Array.from(e.target.selectedOptions || [], (option) => ({
+      value: option.value,
+      label: option.label,
+    }));
+
+    const isOptionSelected = (option) => {
+      return selectedJobs.some((selectedOption) => selectedOption.value === option.value);
+    };
+   
+    const updatedSelectedJobs = selectedOptions.filter((option) => {
+      const isOptionSelected = selectedJobs.some((selectedOption) => selectedOption.value === option.value);
+      return !isOptionSelected;
+    });
+
+    setSelectedJobs([...selectedJobs, ...updatedSelectedJobs]);
   };
+
+  const handleCancelJob = (value) => {
+    const updatedSelectedJobs = selectedJobs.filter((option) => option.value !== value);
+    setSelectedJobs(updatedSelectedJobs);
+  };
+
 
   const handleJobDeliveryDateChange = (e) => {
     dispatch(setQuotation({ jobDeliveryDate: e.target.value }));
@@ -138,7 +159,7 @@ export default function ProfileForm() {
     <form>
       <div className="border-b border-gray-900/10 pb-12">
         <h2 className="text-base font-semibold leading-7 text-white text-center">
-          Add New Questions
+          Add New Quotation
         </h2>
         {/* <p className="mt-1 text-sm leading-6 text-gray-600">
           Use a permanent address where you can receive mail.
@@ -161,9 +182,9 @@ export default function ProfileForm() {
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 value={questionNumber}
                 onChange={handleQuestionNumberChange}
-                disabled
               />
             </div>
+
           </div>
 
           <div className="sm:col-span-3">
@@ -228,27 +249,72 @@ export default function ProfileForm() {
               List of jobs to be produced
             </label>
             <div className="mt-2">
+              <div className="flex flex-wrap">
+                {selectedJobs.map((option) => (
+                  <div key={option.value} className="flex items-center mt-2 mr-2">
+                    <div className="px-2 py-1 bg-gray-900 rounded-md flex items-center">
+                      <span className="mr-1">{option.label}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleCancelJob(option.value)}
+                        className="text-red-600 hover:text-red-800 focus:text-red-800 focus:outline-none"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M13.06 5.94a.75.75 0 1 0-1.06 1.06L14.94 10l-2.94 2.94a.75.75 0 1 0 1.06 1.06L16 11.06l2.94 2.94a.75.75 0 0 0 1.06-1.06L17.06 10l2.94-2.94a.75.75 0 1 0-1.06-1.06L16 8.94l-2.94-2.94z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
               <select
                 id="jobs"
                 name="jobs"
                 autoComplete="jobs"
-                value={quotation.jobs}
+                value={selectedJobs.map((option) => option.value)}
                 onChange={handleJobsChange}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                multiple // Enable multiple selections
               >
                 <option>-- Select --</option>
-                <option>Warehouse Manager</option>
-                <option>Inventory Analyst</option>
-                <option>Purchasing Coordinator</option>
-                <option>Supply Chain Planner</option>
-                <option>Inventory Control Specialist</option>
-                <option>Materials Planner</option>
-                <option>Logistics Coordinator</option>
-                <option>Inventory Supervisor</option>
-                <option>Operations Manager</option>
-                <option>Demand Planner</option>
+                <option value="Warehouse Manager">Warehouse Manager</option>
+                <option value="Inventory Analyst">Inventory Analyst</option>
+                <option value="Purchasing Coordinator">Purchasing Coordinator</option>
+                <option value="Supply Chain Planner">Supply Chain Planner</option>
+                <option value="Inventory Control Specialist">Inventory Control Specialist</option>
+                <option value="Materials Planner">Materials Planner</option>
+                <option value="Logistics Coordinator">Logistics Coordinator</option>
+                <option value="Inventory Supervisor">Inventory Supervisor</option>
+                <option value="Operations Manager">Operations Manager</option>
+                <option value="Demand Planner">Demand Planner</option>
               </select>
             </div>
+            {/* <div className="mt-2">
+              {selectedJobs.map((option) => (
+                <label key={option.value} className="inline-flex items-center mr-2 mt-2">
+                  <input
+                    type="checkbox"
+                    value={option.value}
+                    checked={isOptionSelected(option)}
+                    onChange={handleJobsChange}
+                    className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                  />
+                  <span className={`ml-2 ${isOptionSelected(option) ? 'line-through' : ''}`}>
+                    {option.label}
+                  </span>
+                </label>
+              ))}
+            </div> */}
+
           </div>
 
           <div className="sm:col-span-3">

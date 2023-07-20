@@ -1,80 +1,50 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 
-const ReportPDFComponent = ({ data }) => {
+const ReportPDFComponent = () => {
     const styles = StyleSheet.create({
-        page: {
-            padding: 20,
+        body: {
+            paddingTop: 35,
+            paddingBottom: 65,
+            paddingHorizontal: 35,
         },
         header: {
+            fontSize: 12,
             marginBottom: 20,
+            textAlign: "center",
+            color: "grey",
         },
-        headerText: {
+        pageNumber: {
+            position: "absolute",
             fontSize: 12,
-            marginBottom: 5,
-            color: 'black',
-        },
-        costSheet: {
-            marginTop: 20,
-        },
-        costSheetTitle: {
-            fontSize: 14,
-            marginBottom: 10,
-            fontWeight: 'bold',
-            color: 'black',
-        },
-        costSheetItem: {
-            fontSize: 12,
-            marginBottom: 5,
-            color: 'black',
-        },
-    });
-
-    const renderHeader = () => {
-        if (!data) {
-            return null; // Return null or a loading indicator while data is being fetched
+            bottom: 30,
+            left: 0,
+            right: 0,
+            color: "grey",
+            textAlign: "center",
         }
-
-        return (
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Name: {data.name}</Text>
-                <Text style={styles.headerText}>Number: {data.number}</Text>
-                <Text style={styles.headerText}>Site Address: {data.siteAddress}</Text>
-                <Text style={styles.headerText}>Person in Charge Number: {data.personInChargeNumber}</Text>
-                <Text style={styles.headerText}>Physical Measurement Taken by: {data.physicalMeasurementTakenBy}</Text>
-                <Text style={styles.headerText}>Text then Color: {data.textThenColor}</Text>
-                <Text style={styles.headerText}>Job Order: {data.jobOrder}</Text>
-                <Text style={styles.headerText}>Quotation Number: {data.quotationNumber}</Text>
-            </View>
-        );
-    };
-
-    const renderCostSheet = () => {
-        if (!data || !data.costSheetItems) {
-            return null; // Return null or a loading indicator while data is being fetched
-        }
-
-        return (
-            <View style={styles.costSheet}>
-                <Text style={styles.costSheetTitle}>Cost Sheet</Text>
-                {/* Iterate over cost sheet items and display them */}
-                {data.costSheetItems.map((item) => (
-                    <Text key={item.id} style={styles.costSheetItem}>
-                        {item.title}
-                    </Text>
-                ))}
-            </View>
-        );
-    };
-
+    })
     return (
-        <Document>
-            <Page style={styles.page}>
-                {renderHeader()}
-                {renderCostSheet()}
-            </Page>
-        </Document>
-    );
-};
+        <div className="p-2 m-4 shadow-sm">
+            <div className="max-w-md mx-auto bg-slate-900 rounded-md shadow-md p-6">
+                <Document>
+                    <Page style={styles.body}>
+                        <Text style={styles.header} fixed>
+                            Aging Breakthrough: Scientists Discover a New Molecule That Can Purge “Zombie” Cells
+                        </Text>
+                        <Text>
+                            
+                        </Text>
+                        <Text
+                            style={styles.pageNumber}
+                            fixed
+                            render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+                        />
+                    </Page>
+                </Document>
+            </div>
+        </div>
+    )
+}
 
 export default ReportPDFComponent;

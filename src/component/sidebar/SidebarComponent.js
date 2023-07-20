@@ -28,7 +28,6 @@ export default function SidebarComponent() {
               <Link to="/com">My Component</Link>
             </li>
           </ul>
-
           <Outlet />
         </Col>
       </Row>

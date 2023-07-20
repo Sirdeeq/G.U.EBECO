@@ -9,7 +9,7 @@ export default function CustomButton({
   bannerText,
   onClick,
 }) {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  // const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleButtonClick = () => {
     // Execute the passed onClick function (if provided)

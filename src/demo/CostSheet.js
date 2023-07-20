@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -24,7 +24,6 @@ const CostSheet = ({
   removeCostSheetItem,
 }) => {
   const navigate = useNavigate();
-  const [selectedJob, setSelectedJob] = useState("");
 
   const headers = [
     { key: "name", label: "Name", input: true },
@@ -44,9 +43,16 @@ const CostSheet = ({
     return total;
   };
 
-  const saveDataAndNavigate = (data) => {
-    // Save data to local storage
-    localStorage.setItem("data", JSON.stringify(data));
+  const saveDataAndNavigate = () => {
+    const dataToSave = {
+      quotationNumber,
+      customerName,
+      job,
+      costSheet,
+    };
+
+    // Save data to localStorage
+    localStorage.setItem("data", JSON.stringify(dataToSave));
 
     // Navigate to the report component
     navigate("/report");
@@ -64,8 +70,8 @@ const CostSheet = ({
       "YOUR_PRICE"
     );
 
-    // Navigate to the report component
-    navigate("/report");
+    // Save data to localStorage and navigate to the report component
+    saveDataAndNavigate();
   };
 
   return (
